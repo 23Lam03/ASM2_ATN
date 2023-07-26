@@ -1,0 +1,81 @@
+
+{% block body %}
+    <title>Login</title>
+    <link rel="icon" href="{{ asset ('uploads/image/logologin.jpg.') }}">
+    <!-- Font Awesome -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.4.0/mdb.min.css"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.4.0/mdb.min.js"
+    ></script>
+    <section class="vh-100" style="background-color: #FFFAF9">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col col-xl-10">
+                    <div class="card" style="border-radius: 1rem;" >
+                        <div class="row g-0">
+                            <div class="col-md-6 col-lg-5 d-none d-md-block">
+                                <img src="{{ asset('uploads/image/logologin.jpg')}}"
+                                     alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem; height: 100%" />
+                            </div>
+                            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                                <div class="card-body p-4 p-lg-5 text-black">
+
+                                    <form action="{{ relative_path('/login') }}" method="post">
+                                        <a href="{{ relative_path('/product/list') }}">
+                                        <div class="d-center align-items-center mb-7 pb-1" style="margin-left: 25%; font-size: 80px">
+                                            <a href="{{ relative_path('/product/list') }}"><img src="uploads/image/logowina.png" style="height: 100px; width: 100px"></a>
+                                        </div></a>
+
+                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
+
+                                        <div class="form-outline mb-4">
+                                            <input type="text" id="username" name="_username" class="form-control form-control-lg" value="{{ last_username }}" />
+                                            <label class="form-label" for="username">Email address</label>
+                                        </div>
+
+                                        <div class="form-outline mb-4">
+                                            <input type="password" id="password" name="_password" class="form-control form-control-lg" />
+                                            <label class="form-label" for="password">Password</label>
+                                        </div>
+                                                {% if error %}
+                                                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                                {% endif %}
+                                        <div class="pt-1 mb-4">
+                                            <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+                                        </div>
+
+
+                                        <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="{{ relative_path('/register') }}"
+                                                                                                                  style="color: #393f81;">Register here</a></p>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<style>
+    .form-outline{
+        background-color: #FAFAFA;
+    }
+</style>
+
+{% endblock %}

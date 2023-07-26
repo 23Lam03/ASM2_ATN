@@ -1,0 +1,207 @@
+{% extends 'base.html.twig' %}
+{#{% extends 'base.html.twig' %}#}
+{% block body %}
+
+
+
+    {# First Slide #}
+    <div id="demo" class="carousel slide" data-bs-ride="carousel">
+
+        <!-- Indicators/dots -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+        </div>
+
+        <!-- The slideshow/carousel -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="uploads/image/baner-manga1.png" alt="banner 1" class="d-block w-80">
+            </div>
+            <div class="carousel-item">
+                <img src="uploads/image/baner-manga2.jpg" alt="banner 2" class="d-block w-90">
+            </div>
+        </div>
+
+        <!-- Left and right controls/icons -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+    {# End Slide #}
+<br><br>
+    <ul class="list-group">
+        <div class="container mt-2">
+            <div class="col-md-12"><br>
+                <div>
+                <h3 style="font-weight: bold; text-align: center;" class="title--line">Category</h3>
+                </div>
+            </div><br>
+            <div class="row">
+                {% set itemsPerRow = 12 %} {# Số cột hiển thị trên mỗi hàng #}
+                {% set currentColumn = 0 %}
+                {% for category in categories %}
+                    {% if currentColumn == 0 %}
+                        <div class="row"> {# Mở một hàng mới cho cột đầu tiên #}
+                    {% endif %}
+                    <div class="col-md-1" style="margin-right: 60px">
+                        <a class="category-link" href="{{ path('productByCat', {'id': category.id}) }}">
+                            <img src="{{ asset('uploads/image/' ~ category.logo) }}" class="rounded-circle category-logo" height="120px" width="120px" alt="{{ category.catname }}">
+                            <div class="category-name">{{ category.catname }}</div>
+                        </a><br><br>
+                    </div>
+                    {% set currentColumn = currentColumn + 1 %}
+                    {% if currentColumn == itemsPerRow %}
+                        </div> {# Đóng hàng sau khi đã đủ số cột trên một hàng #}
+                        {% set currentColumn = 0 %}
+                    {% endif %}
+                {% endfor %}
+                {% if currentColumn > 0 %}
+            </div> {# Đóng hàng nếu cột cuối cùng chưa đủ số cột trên một hàng #}
+            {% endif %}
+        </div>
+    </ul>
+
+
+    <br><br><h1 style="text-align: center; font-weight: bold">All Products </h1><br><br>
+        </div>
+    </ul>
+    <!-- Tab panes -->
+    <div class="container mt-3">
+        <div class="row">
+            {% set itemsPerPage = 40 %} {# Số sản phẩm hiển thị trên mỗi trang #}
+            {% set currentPage = app.request.get('page', 1) %}
+            {% set start = (currentPage - 1) * itemsPerPage %}
+            {% set end = start + itemsPerPage %}
+            {% for product in products|slice(start, end) %}
+            {% if loop.index % 4 == 1 %}
+        </div>
+        <div class="row">{# Mở một hàng mới cho cột thứ hai #}
+            {% endif %}
+            <div class="col-md-3">
+                <div class="card zoom-effect" style="width: 310px; border: none;"> {# Loại bỏ viền đen xung quanh card #}
+                    <div class="card-body" style="height: 570px;"> {# Đặt chiều cao cố định cho card-body #}
+                        <a href="{{ path('product_details', {'id': product.id}) }}" style="text-decoration: none; color: inherit;"> {# Bấm vào card để mở trang sản phẩm #}
+                            <img src="{{ asset('uploads/image/' ~ product.productImage) }}" class="card-img-top" height="400px" width="250px" alt="Product Image">
+                            <br><br>
+                            <h4 style="height: 70px; overflow: hidden; font-size: 18px;">{{ product.name }}</h4> {# Đặt chiều cao cố định và ẩn overflow cho tiêu đề #}
+                            <div class="row">
+                                <div class="col">
+                                <span style="font-size: 20px">
+                                    <strong style="color: red">{{ product.price }}đ</strong>
+                                </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div><br>
+            </div>
+            {% endfor %}
+        </div>
+        <br>
+        <div class="pagination-container text-center"> {# Thêm class "pagination-container" #}
+            {% set totalPages = (products|length / itemsPerPage)|round(0, 'ceil') %}
+            <div class="pagination">
+                {% for page in 1..totalPages %}
+                    <a href="{{ path('product_list', {'page': page}) }}" class="{% if page == currentPage %}active{% endif %}">{{ page }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <style>
+        #backgroup_Banner{
+            display: block;
+
+        }
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .pagination {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+        }
+
+    .pagination a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+
+    .pagination a.active {
+        background-color: #7B7B7B;
+        color: white;
+        border-radius: 5px;
+    }
+
+    .pagination a:hover:not(.active) {
+        background-color: #ddd;
+        border-radius: 5px;
+    }
+        .category-link {
+            display: inline-block;
+            text-decoration: none;
+            outline: none;
+            border: none;
+            padding: 0;
+        }
+
+        .category-link:focus,
+        .category-link:hover {
+            outline: none;
+        }
+        .category-divider {
+            border: none;
+            border-top: 1px solid black;
+            margin-bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .category-name {
+            color: black;
+            text-decoration: none;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold
+        }
+        .category-link {
+            text-decoration: none;
+        }
+        .category-link:hover {
+            text-decoration: none;
+        }
+
+        .zoom-effect img {
+            transition: transform 1s ease;
+        }
+
+        .zoom-eff0ect:hover img {
+            transform: scale(1.1);
+        }
+        .banner-left{
+        }
+        .title--line:before {
+            position: absolute;
+            content: "";
+            width: 40%;
+            height: 2px;
+            background: #0E1C22;
+            bottom: 0;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            -o-transform: translateX(-50%);
+            transform: translateX(-50%);
+        }
+    </style>
+
+
+{% endblock %}
+
